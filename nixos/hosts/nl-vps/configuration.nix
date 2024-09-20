@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-    ../default-configuration.nix
+    ../base-configuration.nix
   ];
 
   time.timeZone = "Europe/Amsterdam";
