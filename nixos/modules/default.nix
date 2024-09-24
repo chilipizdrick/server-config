@@ -5,5 +5,6 @@
     ./firewall
     ./containers
     ./nginx
+    ./sops
   ];
 }
