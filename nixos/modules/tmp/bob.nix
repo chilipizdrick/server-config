@@ -3,7 +3,7 @@
     addSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://bob:8000";
+      proxyPass = "http://localhost:8000";
       extraConfig = ''
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
