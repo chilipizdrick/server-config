@@ -1,5 +1,7 @@
 {...}: {
   services.nginx = {
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
     enable = true;
   };
   security.acme = {
