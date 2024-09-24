@@ -9,7 +9,7 @@
       /etc/schizophrenia-bot/.env
     ];
     extraOptions = [
-      "--pull=newer"
+      "--pull=always"
     ];
   };
   system.activationScripts.create-schizophrenia-bot-volumes = ''

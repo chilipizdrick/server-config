@@ -13,7 +13,7 @@
       "/etc/bob/db:/app/db"
     ];
     extraOptions = [
-      "--pull=newer"
+      "--pull=always"
     ];
   };
 

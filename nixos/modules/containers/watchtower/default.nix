@@ -3,7 +3,7 @@
     autoStart = true;
     image = "containrrr/watchtower";
     extraOptions = [
-      "--pull=newer"
+      "--pull=always"
     ];
     volumes = [
       "/var/run/docker.sock:/var/run/docker.sock"
