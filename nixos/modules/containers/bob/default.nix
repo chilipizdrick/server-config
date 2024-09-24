@@ -14,6 +14,7 @@
     ];
     extraOptions = [
       "--pull=always"
+      "-p 8000:8000"
     ];
   };
 
