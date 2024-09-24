@@ -1,6 +1,6 @@
 {...}: {
   virtualisation.oci-containers.containers."schizophrenia-bot" = {
-    image = "docker.io/chilipizdrick/schizophrenia-bot:latest";
+    image = "chilipizdrick/schizophrenia-bot";
     volumes = [
       "/etc/schizophrenia-bot/userdata:/app/userdata"
       "/etc/schizophrenia-bot/assets:/app/assets"

@@ -1,6 +1,6 @@
 {...}: {
   virtualisation.oci-containers.containers."bob" = {
-    image = "docker.io/chilipizdrick/bob:latest";
+    image = "chilipizdrick/bob:latest";
     login = {
       registry = "docker.io";
       username = "chilipizdrick";

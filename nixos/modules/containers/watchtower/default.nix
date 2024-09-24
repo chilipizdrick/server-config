@@ -1,8 +1,8 @@
 {...}: {
   virtualisation.oci-containers.containers."watchtower" = {
-    image = "quay.io/containrrr/watchtower:stable";
+    image = "containrrr/watchtower";
     extraOptions = [
-      "--label-enable"
+      # "--label-enable"
       "--interval 7200"
     ];
     volumes = [
