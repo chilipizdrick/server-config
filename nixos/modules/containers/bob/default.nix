@@ -1,6 +1,6 @@
 {...}: {
   virtualisation.oci-containers.containers."bob" = {
-    image = "chilipizdrick/bob:latest";
+    image = "docker.io/chilipizdrick/bob";
     login = {
       registry = "docker.io";
       username = "chilipizdrick";
@@ -12,9 +12,9 @@
     volumes = [
       "/etc/bob/db:/app/db"
     ];
-    extraOptions = [
-      "--label 'com.centurylinklabs.watchtower.enable=true'"
-    ];
+    # extraOptions = [
+    #   "--label 'com.centurylinklabs.watchtower.enable=true'"
+    # ];
   };
 
   system.activationScripts.create-bob-volumes = ''
