@@ -12,9 +12,9 @@
     volumes = [
       "/etc/bob/db:/app/db"
     ];
-    # extraOptions = [
-    #   "--label 'com.centurylinklabs.watchtower.enable=true'"
-    # ];
+    extraOptions = [
+      "--pull=newer"
+    ];
   };
 
   system.activationScripts.create-bob-volumes = ''

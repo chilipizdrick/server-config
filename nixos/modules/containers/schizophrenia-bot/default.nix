@@ -8,9 +8,9 @@
     environmentFiles = [
       /etc/schizophrenia-bot/.env
     ];
-    # extraOptions = [
-    #   "--label 'com.centurylinklabs.watchtower.enable=true'"
-    # ];
+    extraOptions = [
+      "--pull=newer"
+    ];
   };
   system.activationScripts.create-schizophrenia-bot-volumes = ''
     mkdir -p /etc/schizophrenia-bot/userdata
