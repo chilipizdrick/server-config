@@ -2,6 +2,6 @@
   services.nginx.virtualHosts."bob.chilipizdrick.xyz" = {
     addSSL = true;
     enableACME = true;
-    locations."/".proxyPass = "https://localhost:8000";
+    locations."/".proxyPass = "http://127.0.0.1:8000";
   };
 }
