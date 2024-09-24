@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./schizophrenia-bot
-    # ./binary-options-bot
+    ./watchtower
   ];
 
   virtualisation = {

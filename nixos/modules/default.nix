@@ -4,5 +4,6 @@
     ./zsh
     ./firewall
     ./containers
+    ./nginx
   ];
 }
