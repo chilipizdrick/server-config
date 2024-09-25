@@ -6,6 +6,6 @@
   };
   security.acme = {
     acceptTerms = true;
-    defaults.email = "chilipizdrick@chilipizdrick.xyz";
+    defaults.email = "chilipizdrick@mail.chilipizdrick.xyz";
   };
 }

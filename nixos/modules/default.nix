@@ -4,7 +4,7 @@
     ./zsh
     ./firewall
     ./containers
-    # ./nginx
+    ./nginx
     ./sops
   ];
 }
