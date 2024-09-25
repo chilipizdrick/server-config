@@ -8,18 +8,18 @@
   };
 
   sops.secrets = {
-    "bob/docker_hub/password" = {
-      path = "/etc/bob/docker_hub_password.txt";
-    };
+    # "bob/docker_hub/password" = {
+    #   path = "/etc/bob/docker_hub_password.txt";
+    # };
     schizophrenia-bot-env = {
       sopsFile = ../../../secrets/schizophrenia-bot.env;
       format = "dotenv";
       path = "/etc/schizophrenia-bot/.env";
     };
-    bob-env = {
-      sopsFile = ../../../secrets/bob.env;
-      format = "dotenv";
-      path = "/etc/bob/.env";
-    };
+    # bob-env = {
+    #   sopsFile = ../../../secrets/bob.env;
+    #   format = "dotenv";
+    #   path = "/etc/bob/.env";
+    # };
   };
 }

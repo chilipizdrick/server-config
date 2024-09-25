@@ -1,9 +1,9 @@
-{...}: {
+{inputs, ...}: {
   virtualisation.oci-containers.containers."schizophrenia-bot" = {
     image = "chilipizdrick/schizophrenia-bot";
     volumes = [
-      "/etc/schizophrenia-bot/userdata:/app/userdata"
-      "/etc/schizophrenia-bot/assets:/app/assets"
+      "schizophrenia-bot-userdata/:/app/userdata/:rw"
+      "/etc/schizophrenia-bot/assets/:/app/assets/:rw"
     ];
     environmentFiles = [
       /etc/schizophrenia-bot/.env
@@ -12,8 +12,6 @@
       "--pull=always"
     ];
   };
-  system.activationScripts.create-schizophrenia-bot-volumes = ''
-    mkdir -p /etc/schizophrenia-bot/userdata
-    mkdir -p /etc/schizophrenia-bot/assets
-  '';
+
+  environment.etc."schizophrenia-bot/assets".source = inputs.schizophrenia-bot-assets;
 }

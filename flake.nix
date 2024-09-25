@@ -8,6 +8,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    schizophrenia-bot-assets = {
+      url = "github:chilipizdrick/schizgophrenia-got-assets";
+      flake = false;
+    };
   };
 
   outputs = {
