@@ -30,7 +30,10 @@
   boot.tmp.cleanOnBoot = true;
 
   users.users = let
-    sshKeys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOxfYfqKgUPvArW2fOl3KI/nbYODPrDslypy0xstULp alex@nixos"];
+    sshKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOxfYfqKgUPvArW2fOl3KI/nbYODPrDslypy0xstULp alex@nixos"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGf0ZDHmsaek5djJJPYdBFHzJnSJ9fN15jLhq9JRiGdB liquidity-github-actions"
+    ];
   in {
     "root" = {
       openssh.authorizedKeys.keys = sshKeys;
