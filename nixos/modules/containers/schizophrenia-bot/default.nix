@@ -3,7 +3,7 @@
     image = "chilipizdrick/schizophrenia-bot";
     volumes = [
       "schizophrenia-bot-userdata:/app/userdata/:rw"
-      "/etc/schizophrenia-bot/assets/:/app/assets/:r0"
+      "/etc/schizophrenia-bot/assets/:/app/assets/:ro"
     ];
     environmentFiles = [
       /etc/schizophrenia-bot/.env
