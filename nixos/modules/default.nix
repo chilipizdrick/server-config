@@ -1,10 +1,11 @@
 {...}: {
   imports = [
     ./ssh
+    ./vpn
     ./zsh
+    # ./nginx
     ./firewall
     ./containers
-    # ./nginx
     ./sops
   ];
 }
