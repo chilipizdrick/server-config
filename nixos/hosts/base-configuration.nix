@@ -57,5 +57,7 @@
     tmux
     tmux-sessionizer
     btop
+    openssl
+    wget
   ];
 }
