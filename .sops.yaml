@@ -5,10 +5,6 @@ creation_rules:
     key_groups:
       - age:
         - *chilipizdrick
-  - path_regex: secrets/bob.env$
-    key_groups:
-      - age:
-        - *chilipizdrick
   - path_regex: secrets/schizophrenia-bot.env$
     key_groups:
       - age:
