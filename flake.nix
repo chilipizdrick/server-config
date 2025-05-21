@@ -2,35 +2,23 @@
   description = "Server configuration flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    schizophrenia-bot-assets = {
-      url = "github:chilipizdrick/schizgophrenia-got-assets";
-      flake = false;
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
-    formatter."x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".alejandra;
-
-    nixosConfigurations = {
-      "nl-vps" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          ./nixos/hosts/nl-vps/configuration.nix
-        ];
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux"];
+      perSystem = {pkgs, ...}: {
+        formatter = pkgs.alejandra;
+      };
+      flake = {
+        nixosConfigurations."nl-vps" = inputs.nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs;};
+          modules = [
+            ./nixos/hosts/nl-vps/configuration.nix
+          ];
+        };
       };
     };
-  };
 }

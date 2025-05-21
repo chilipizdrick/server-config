@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    # ./zerotier
     ./tailscale
   ];
 }

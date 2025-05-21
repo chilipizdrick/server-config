@@ -3,9 +3,8 @@
     ./ssh
     ./vpn
     ./zsh
-    # ./nginx
+    ./reverse-proxy
     ./firewall
     ./containers
-    ./sops
   ];
 }
