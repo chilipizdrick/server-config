@@ -1,5 +1,5 @@
 {config, ...}: let
-  oksanaPort = 80;
+  oksanaPort = 8000;
 in {
   services.caddy = {
     enable = true;
