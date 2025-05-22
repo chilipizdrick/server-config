@@ -1,17 +1,17 @@
 {config, ...}: let
-  oksanaPort = 8000;
+  oksanaPort = 8080;
+  domain = "chilipizdrick.xyz";
 in {
   services.caddy = {
     enable = true;
-    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory";
-    email = "chilipizdrick@chilipizdrick.xyz";
+    email = "chilipizdrick@${domain}";
     virtualHosts = {
-      "headscale.chilipizdrick.xyz" = {
+      "headscale.${domain}" = {
         extraConfig = ''
           reverse_proxy * 127.0.0.1:${toString config.services.headscale.port}
         '';
       };
-      "oksana.chilipizdrick.xyz" = {
+      "oksana.${domain}" = {
         extraConfig = ''
           reverse_proxy * 127.0.0.1:${toString oksanaPort}
         '';

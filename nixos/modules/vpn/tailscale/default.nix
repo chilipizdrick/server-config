@@ -1,18 +1,17 @@
-{pkgs, ...}: {
+{config, ...}: {
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "server";
     openFirewall = true;
-    port = 41641;
-    interfaceName = "tailscale0";
     extraUpFlags = [
       "--advertise-exit-node"
     ];
   };
 
-  environment.systemPackages = [pkgs.tailscale];
+  environment.systemPackages = [config.services.tailscale.package];
 
   networking.firewall = {
-    trustedInterfaces = ["tailscale0"];
+    trustedInterfaces = [config.services.tailscale.interfaceName];
+    allowedTCPPorts = [config.services.tailscale.port];
   };
 }
