@@ -4,10 +4,13 @@ in {
   services.headscale = {
     enable = true;
     address = "0.0.0.0";
-    port = 6969;
+    port = 1080;
     settings = {
       server_url = "https://headscale.${baseDomain}:443";
-      dns.base_domain = baseDomain;
+      dns = {
+        magic_dns = true;
+        base_domain = baseDomain;
+      };
     };
   };
 

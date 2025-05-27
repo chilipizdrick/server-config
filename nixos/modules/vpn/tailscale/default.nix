@@ -8,7 +8,9 @@
     ];
   };
 
-  environment.systemPackages = [config.services.tailscale.package];
+  environment.systemPackages = [
+    config.services.tailscale.package
+  ];
 
   networking.firewall = {
     trustedInterfaces = [config.services.tailscale.interfaceName];
