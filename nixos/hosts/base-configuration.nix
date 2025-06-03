@@ -28,21 +28,24 @@
   boot.loader.timeout = 0;
 
   users.users = let
-    authorizedSshKeys = [
+    authorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOxfYfqKgUPvArW2fOl3KI/nbYODPrDslypy0xstULp alex@nixos"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRDxyYNSIY8x3niE5EdyoWdB9PXHkUarJtEX+AnHn6f alex@atlas"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOlxRZVMbj4gWyxwZafg9kyQ/TTcn/KeU6Pb46gos5x6 alex@aurora"
     ];
+    defaultUser = {
+      shell = pkgs.zsh;
+      openssh.authorizedKeys.keys = authorizedKeys;
+    };
   in {
-    "root" = {
-      shell = pkgs.zsh;
-      openssh.authorizedKeys.keys = authorizedSshKeys;
-    };
-    "vps" = {
-      initialPassword = "password";
-      isNormalUser = true;
-      extraGroups = ["admin" "wheel" "docker" "podman" "users" "systemd-journal" "networkmanager" config.services.headscale.group];
-      openssh.authorizedKeys.keys = authorizedSshKeys;
-      shell = pkgs.zsh;
-    };
+    "root" = defaultUser;
+    "vps" =
+      defaultUser
+      // {
+        initialPassword = "password";
+        isNormalUser = true;
+        extraGroups = ["admin" "wheel" "docker" "podman" "users" "systemd-journal" "networkmanager" config.services.headscale.group];
+      };
   };
 
   environment.systemPackages = with pkgs; [

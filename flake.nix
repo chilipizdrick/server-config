@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +33,6 @@
             system = "x86_64-linux";
             specialArgs = {inherit inputs;};
             modules = [
-              inputs.disko.nixosModules.disko
               ./nixos/hosts/nl-vmnano/configuration.nix
             ];
           };
