@@ -2,14 +2,19 @@
   imports = [./headscale-ui];
 
   virtualisation = {
-    podman = {
+    docker = {
       enable = true;
-      dockerCompat = true;
     };
-    oci-containers.backend = "podman";
+    # podman = {
+    #   enable = true;
+    #   dockerCompat = true;
+    # };
+    # oci-containers.backend = "podman";
+    oci-containers.backend = "docker";
   };
 
   environment.systemPackages = with pkgs; [
-    podman-compose
+    # podman-compose
+    docker-compose
   ];
 }

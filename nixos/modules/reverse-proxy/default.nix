@@ -1,5 +1,6 @@
 {config, ...}: let
   oksanaPort = 8080;
+  liquidityPort = 8090;
   headscaleUiPort = 2080;
   domain = "chilipizdrick.xyz";
 in {
@@ -16,6 +17,16 @@ in {
       "oksana.${domain}" = {
         extraConfig = ''
           reverse_proxy * 127.0.0.1:${toString oksanaPort}
+        '';
+      };
+      "liquidity.${domain}" = {
+        extraConfig = ''
+          handle_path /static/* {
+            root * /var/www/liquidity/static/
+            file_server
+          }
+
+          reverse_proxy * 127.0.0.1:${toString liquidityPort}
         '';
       };
     };
