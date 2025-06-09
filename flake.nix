@@ -22,13 +22,6 @@
       };
       flake = {
         nixosConfigurations = {
-          "nl-vps" = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {inherit inputs;};
-            modules = [
-              ./nixos/hosts/nl-vps/configuration.nix
-            ];
-          };
           "nl-vmnano" = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = {inherit inputs;};
