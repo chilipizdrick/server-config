@@ -26,7 +26,14 @@
             system = "x86_64-linux";
             specialArgs = {inherit inputs;};
             modules = [
-              ./nixos/hosts/nl-vmnano/configuration.nix
+              ./nixos/hosts/nl-vmnano
+            ];
+          };
+          "nl-vmpico-test" = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {inherit inputs;};
+            modules = [
+              ./nixos/hosts/nl-vmpico-test
             ];
           };
         };

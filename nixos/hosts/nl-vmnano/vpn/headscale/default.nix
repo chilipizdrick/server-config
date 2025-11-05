@@ -10,6 +10,12 @@ in {
       dns = {
         magic_dns = true;
         base_domain = baseDomain;
+        nameservers.global = [
+          "1.1.1.1"
+          "1.0.0.1"
+          "2606:4700:4700::1111"
+          "2606:4700:4700::1001"
+        ];
       };
       # oidc = {
       #   only_start_if_oidc_is_available = false;
