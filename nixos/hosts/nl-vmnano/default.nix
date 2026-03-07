@@ -6,7 +6,7 @@
     ./disk-config
     ./headscale-ui
     ./reverse-proxy
-    ./schizophrenia-bot
+    # ./schizophrenia-bot
     ./vpn
   ];
 
