@@ -15,11 +15,6 @@
         key = "";
         mode = "0444";
       };
-      schizophrenia-bot-env = {
-        sopsFile = ../../../secrets/schizophrenia-bot.env;
-        format = "dotenv";
-        path = "/etc/schizophrenia-bot/.env";
-      };
     };
   };
 }
