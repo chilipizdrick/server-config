@@ -2,6 +2,6 @@
   imports = [
     ./tailscale
     ./headscale
-    ./v2ray
+    # ./v2ray
   ];
 }
