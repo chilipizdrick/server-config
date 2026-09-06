@@ -1,0 +1,7 @@
+file_storage_path = "/var/lib/schizoid/assets"
+max_attachment_size = 10_000_000
+max_attachment_count = 100
+
+[minecraft_server_ping]
+enabled = true
+

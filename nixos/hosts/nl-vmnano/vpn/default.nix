@@ -1,7 +1,6 @@
 {...}: {
   imports = [
-    ./tailscale
-    ./headscale
-    # ./v2ray
+    ./tailscale.nix
+    ./headscale.nix
   ];
 }

@@ -10,7 +10,10 @@
     withSystem system ({inputs', ...}: let
       specialArgs = {inherit inputs inputs';};
     in
-      inputs.nixpkgs.lib.nixosSystem {inherit modules specialArgs;});
+      inputs.nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        modules = [./modules] ++ modules;
+      });
 in {
   flake.nixosConfigurations = {
     nl-vmnano = nixosConfiguration {modules = [./hosts/nl-vmnano];};

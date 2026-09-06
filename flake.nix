@@ -16,10 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    schizoid = {
-      url = "github:chilipizdrick/schizoid";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    schizoid.url = "github:chilipizdrick/schizoid";
   };
 
   outputs = inputs:

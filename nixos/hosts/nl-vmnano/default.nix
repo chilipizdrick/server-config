@@ -2,13 +2,13 @@
   imports = [
     (inputs.nixpkgs + "/nixos/modules/installer/scan/not-detected.nix")
     (inputs.nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")
-    ../base-configuration.nix
-    ./disk-config
-    ./headscale-ui
-    ./reverse-proxy
+    ./disk-config.nix
+    ./reverse-proxy.nix
     ./schizoid
     ./vpn
   ];
+
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   boot.loader.grub = {
     efiSupport = true;
