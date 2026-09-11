@@ -33,7 +33,7 @@
   in {
     settings = {
       warn-dirty = false;
-      experimental-features = "nix-command flakes";
+      experimental-features = ["nix-command" "flakes"];
       nix-path = config.nix.nixPath;
     };
     channel.enable = false;
@@ -71,5 +71,6 @@
   environment.systemPackages = with pkgs; [
     curl
     git
+    btop
   ];
 }

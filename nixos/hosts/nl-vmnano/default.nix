@@ -8,6 +8,13 @@
     ./vpn
   ];
 
+  services.openflux-exit = {
+    enable = true;
+    transport = "yandex";
+    debug = false;
+    manageIptablesRst = true;
+  };
+
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot.loader.grub = {
