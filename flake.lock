@@ -155,11 +155,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1780401958,
-        "narHash": "sha256-UzOH4u+lQpUOwFbtid8T0vdJYkVVjPUjfk+x8wTUR7M=",
+        "lastModified": 1789851393,
+        "narHash": "sha256-2LNNUdbgdtoKb0TjPi6lNS3N71xUZpOWtRXyQXp3EMg=",
         "owner": "chilipizdrick",
         "repo": "schizoid",
-        "rev": "d2efd311a46dec22ea6453a23aa8ca06bc6d7261",
+        "rev": "8e379ac688b2d436fc219fee25d23cdfbc795270",
         "type": "github"
       },
       "original": {

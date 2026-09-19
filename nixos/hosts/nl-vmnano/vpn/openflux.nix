@@ -1,137 +1,102 @@
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
-}:
-with lib; let
-  cfg = config.services.openflux-exit;
-
-  openfluxPkg = pkgs.buildGoModule {
+}: let
+  openflux = pkgs.buildGoModule rec {
     pname = "openflux";
-    version = "unstable-2026-09";
+    version = "0.0.3";
 
     src = pkgs.fetchFromGitHub {
       owner = "p1neappleXpress";
       repo = "OpenFlux";
-      rev = "main";
-      hash = "sha256-KMNx9M1aFj6RifJcoziplwHpP0//DjvwNa82ZONPTkE=";
+      rev = version;
+      hash = "sha256-uneE0lOxTglkX7yfiQMusgO0YHi+wCpTFtdHLeHvscs=";
     };
 
-    vendorHash = "sha256-eI2bUAajCvVk21n2koD4VO4hnUdkOBSsSj9d04qOS+s=";
-
+    vendorHash = "sha256-IyzB0CH3Wzw0hWi5ZDplR1G9nxWvGSGBvOX52PQpoCQ=";
     subPackages = ["."];
 
+    env.CGO_ENABLED = 0;
+    ldflags = ["-s" "-w"];
+
     meta = with lib; {
-      description = "Network stack research tool - TCP tunnel with pluggable transports";
+      description = "OpenFlux network tunnel exit node";
       homepage = "https://github.com/p1neappleXpress/OpenFlux";
       license = licenses.gpl3Only;
       platforms = platforms.linux;
-      mainProgram = "universal-bypass-tool";
+      mainProgram = "openflux";
     };
   };
 
-  cmdArgs =
-    [
-      "--exit-node"
-      "--transport"
-      cfg.transport
-    ]
-    ++ optional cfg.debug "--debug"
-    ++ cfg.extraArgs;
+  startScript = pkgs.writeShellScript "openflux-exit-start" ''
+    set -euo pipefail
+
+    SECRET_PATH="${config.sops.secrets."openflux/url".path}"
+    if [ ! -r "$SECRET_PATH" ]; then
+      echo "Error: Secret file $SECRET_PATH is missing or not readable" >&2
+      exit 1
+    fi
+
+    TARGET_URL="$(cat "$SECRET_PATH")"
+    if [ -z "$TARGET_URL" ]; then
+      echo "Error: Document URL inside $SECRET_PATH is empty" >&2
+      exit 1
+    fi
+
+    exec ${openflux}/bin/openflux \
+      --role=exit \
+      --mode=l3 \
+      --transport=yandex \
+      --url="$TARGET_URL" \
+      --debug
+  '';
 in {
-  options.services.openflux-exit = {
-    enable = mkEnableOption "OpenFlux Exit Node proxy service";
-
-    package = mkOption {
-      type = types.package;
-      default = openfluxPkg;
-      description = "The OpenFlux package derivation to use.";
-    };
-
-    transport = mkOption {
-      type = types.enum ["yandex" "oneme"];
-      default = "yandex";
-      description = "Covert transport backend (e.g. Yandex Docs cursor events or Max/OneMe WebRTC).";
-    };
-
-    debug = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable verbose debug logging.";
-    };
-
-    extraArgs = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Additional command-line parameters to pass to OpenFlux.";
-    };
-
-    manageIptablesRst = mkOption {
-      type = types.bool;
-      default = true;
-      description = ''
-        Automatically install an iptables OUTPUT rule to drop outgoing TCP RST
-        packets, preventing the Linux kernel from terminating raw socket sessions.
-      '';
-    };
+  users.users.openflux = {
+    isSystemUser = true;
+    group = "openflux";
+  };
+  users.groups.openflux = {};
+  sops.secrets."openflux/url" = {
+    owner = "openflux";
+    group = "openflux";
+    mode = "0400";
   };
 
-  config = mkIf cfg.enable {
-    # OpenFlux generates TCP packets via raw sockets; without dropping local RSTs,
-    # the Linux kernel will see incoming packets for untracked sockets and send RST flags.
-    networking.firewall.extraCommands = mkIf cfg.manageIptablesRst ''
-      iptables -C OUTPUT -p tcp --tcp-flags RST RST -j DROP 2>/dev/null || \
-        iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
-    '';
+  networking.firewall.extraCommands = ''
+    iptables -C OUTPUT -p tcp --tcp-flags RST RST -j DROP 2>/dev/null || \
+      iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
+  '';
 
-    networking.firewall.extraStopCommands = mkIf cfg.manageIptablesRst ''
-      iptables -D OUTPUT -p tcp --tcp-flags RST RST -j DROP 2>/dev/null || true
-    '';
+  networking.firewall.extraStopCommands = ''
+    iptables -D OUTPUT -p tcp --tcp-flags RST RST -j DROP 2>/dev/null || true
+  '';
 
-    users.users.openflux = {
-      isSystemUser = true;
-      group = "openflux";
-    };
-    users.groups.openflux = {};
+  systemd.services.openflux-exit = {
+    description = "OpenFlux Exit Node Service (L3 Yandex Transport)";
+    wantedBy = ["multi-user.target"];
+    after = ["network.target" "network-online.target"];
+    wants = ["network-online.target"];
 
-    sops.secrets."openflux/url" = {
-      owner = "openflux";
-      group = "openflux";
-      mode = "0400";
-    };
+    serviceConfig = {
+      ExecStart = "${startScript}";
+      Restart = "always";
+      RestartSec = "5s";
 
-    systemd.services.openflux-exit = {
-      description = "OpenFlux Exit Node Service";
-      after = ["network.target" "network-online.target"];
-      wants = ["network-online.target"];
-      wantedBy = ["multi-user.target"];
+      User = "openflux";
+      Group = "openflux";
+      AmbientCapabilities = ["CAP_NET_RAW" "CAP_NET_ADMIN"];
+      CapabilityBoundingSet = ["CAP_NET_RAW" "CAP_NET_ADMIN"];
 
-      serviceConfig = {
-        ExecStart = pkgs.writeShellScript "start-openflux" ''
-          set -euo pipefail
-          URL=$(cat ${config.sops.secrets."openflux/url".path})
-          exec ${cfg.package}/bin/universal-bypass-tool ${escapeShellArgs cmdArgs} --url "$URL"
-        '';
-        Restart = "always";
-        RestartSec = "5s";
-
-        # Avoid running as root; grant raw socket access explicitly
-        User = "openflux";
-        Group = "openflux";
-        DynamicUser = false;
-        AmbientCapabilities = ["CAP_NET_RAW" "CAP_NET_ADMIN"];
-        CapabilityBoundingSet = ["CAP_NET_RAW" "CAP_NET_ADMIN"];
-
-        ProtectSystem = "strict";
-        ProtectHome = true;
-        NoNewPrivileges = false; # Required to preserve ambient capabilities on non-root user
-        PrivateTmp = true;
-        ProtectKernelTunables = true;
-        ProtectControlGroups = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-      };
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      NoNewPrivileges = false;
+      PrivateTmp = true;
+      ProtectKernelTunables = true;
+      ProtectControlGroups = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
     };
   };
 }
