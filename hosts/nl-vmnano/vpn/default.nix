@@ -1,7 +1,7 @@
 {...}: {
   imports = [
-    ./tailscale.nix
     ./headscale.nix
-    ./openflux.nix
+    ./openflux
+    ./tailscale.nix
   ];
 }

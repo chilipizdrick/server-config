@@ -1,14 +1,14 @@
 {
   config,
-  inputs',
+  inputs,
   ...
-}: {
-  environment.systemPackages = [
-    inputs'.schizoid.packages.default
-  ];
+}: let
+  schizoidPkg = inputs.schizoid.packages."x86_64-linux".default;
+in {
+  environment.systemPackages = [schizoidPkg];
 
   sops.secrets.schizoid-env = {
-    sopsFile = ../../../../secrets/schizoid.env;
+    sopsFile = ../../../secrets/schizoid.env;
     format = "dotenv";
     path = "/etc/schizoid/.env";
     restartUnits = ["schizoid.service"];
@@ -36,7 +36,7 @@
     after = ["network-online.target"];
 
     serviceConfig = {
-      ExecStart = "${inputs'.schizoid.packages.schizoid}/bin/schizoid -c /etc/schizoid/config.toml";
+      ExecStart = "${schizoidPkg}/bin/schizoid -c /etc/schizoid/config.toml";
       EnvironmentFile = config.sops.secrets."schizoid-env".path;
 
       Restart = "on-failure";

@@ -4,4 +4,6 @@ max_attachment_count = 100
 
 [minecraft_server_ping]
 enabled = true
-
+ping_timeout_ms = 2500
+ping_interval_ms = 5000
+failed_pings_before_alert = 3

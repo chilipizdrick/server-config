@@ -4,8 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,12 +17,13 @@
     schizoid.url = "github:chilipizdrick/schizoid";
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux"];
-      perSystem = {pkgs, ...}: {
-        formatter = pkgs.alejandra;
-      };
-      imports = [./nixos];
+  outputs = {nixpkgs, ...} @ inputs: let
+    lib = nixpkgs.lib;
+    modules = [./modules];
+  in {
+    nixosConfigurations.nl-vmnano = lib.nixosSystem {
+      specialArgs = {inherit inputs;};
+      modules = modules ++ [./hosts/nl-vmnano];
     };
+  };
 }

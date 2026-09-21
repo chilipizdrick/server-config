@@ -8,10 +8,9 @@
   imports = [
     (inputs.nixpkgs + "/nixos/modules/profiles/headless.nix")
     (inputs.nixpkgs + "/nixos/modules/profiles/minimal.nix")
-    ./containers
-    ./firewall
-    ./sops
-    ./ssh
+    ./firewall.nix
+    ./sops.nix
+    ./ssh.nix
   ];
 
   environment.defaultPackages = [];
@@ -68,9 +67,9 @@
       };
   };
 
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    btop
+  environment.systemPackages = [
+    pkgs.curl
+    pkgs.git
+    pkgs.btop
   ];
 }
